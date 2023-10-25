@@ -17,9 +17,45 @@ class FutureUtilsTest extends FuturesTest {
   "FutureFunctions" when {
     "calling creditScoreAPI" should {
       "return a credit score greater than 300" in {
-        // add unit tests below
-        fail("add unit tests")
+        val userIdsList = (1 to 1000).toList
+        val creditScores: Future[List[Int]] = Future.traverse(userIdsList) { id => 
+          // call credit score API for each user id in the ids list
+          FutureUtils.creditScoreAPI(id).map {  score => 
+            score
+          }
+        }
+        creditScores.map {scoresList => 
+          scoresList.filter(score => score > 300 && score < 800) shouldBe(scoresList)
+        }
       }
     }
+
+     "calling futureFactorial" should {
+      "test for futureFactorial verifying that the result of futureFactorial(4) is Future(Success(24))" in {
+        // add unit tests below
+       FutureUtils.futureFactorial(4).map { x =>
+        x shouldBe(24)
+       }
+      }
+    }
+
+    "calling futurePermutations" should {
+      "test for futurePermutations" in {
+        // add unit tests below
+       FutureUtils.futurePermuations(4, 2).map { x =>
+        x shouldBe(12)
+       }
+      }
+    }
+
+    "calling asyncAverageCreditScore" should {
+      "unit test for asyncAverageCreditScore verifying that the average score is greater than 300 and less than 800" in {
+        // add unit tests below
+       FutureUtils.asyncAverageCreditScore((1 to 1000).toList).map { averageScore =>
+        (averageScore > 300 && averageScore < 800) shouldBe(true)
+       }
+      }
+    }
+
   }
 }
